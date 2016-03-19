@@ -1,0 +1,7 @@
+= Properties
+
+This project rocks and uses MIT-LICENSE.
+
+pushd .
+cd test/dummy && RAILS_ENV=test rake db:drop db:create db:migrate
+popd && rspec
