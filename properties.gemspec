@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2.5"
   s.add_dependency "composite_primary_keys"
-  s.add_dependency "upsert", "~> 2.1.0"
+  s.add_dependency "upsert", "~> 2.1.2"
   s.add_dependency "mysql2", ">= 0.3.13", "< 0.5"
 
   # s.add_development_dependency "sqlite3"

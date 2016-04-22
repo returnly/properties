@@ -1,11 +1,11 @@
 PATH
   remote: .
   specs:
-    properties (0.0.1)
+    properties (0.0.2)
       composite_primary_keys
       mysql2 (>= 0.3.13, < 0.5)
       rails (~> 4.2.5)
-      upsert (~> 2.1.0)
+      upsert (~> 2.1.2)
 
 GEM
   remote: https://rubygems.org/
