@@ -19,7 +19,7 @@
 class PropertyDefinition < ActiveRecord::Base
   self.primary_key = 'property_id'
 
-  after_save 'self.class.clear_caches'
+  after_save { class.clear_caches }
   validate :default_value_consistent_with_type
 
   def default_value_consistent_with_type
@@ -175,9 +175,5 @@ class PropertyDefinition < ActiveRecord::Base
           raise "Unknown property type: #{property_type}"
       end
     end
-
   end # class << self
-
-
 end
-
