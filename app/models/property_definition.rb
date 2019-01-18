@@ -60,8 +60,8 @@ class PropertyDefinition < ActiveRecord::Base
         attr_names = %i(property_id property_name property_owner property_type default_value)
         instance_variable_set(field_name, begin # <-- atomic and thread-safe assignment
           where(property_owner: property_owner)
-            .pluck(*attr_names).reduce({}) do |hash, attr_values|
-            h = Hash[attr_names.zip attr_values]
+            .reduce({}) do |hash, attr|
+            h = Hash[attr_names.zip attr[attr_names]]
             hash.merge(h[index_field] => h.except(index_field))
           end
         end)

@@ -14,7 +14,8 @@ module Properties
     base.delegate :property_owner, :property_class, :implicit_properties,
       :determine_action, :get_property_id_from, to: base.name.to_sym
 
-    base.has_many "#{base.name.underscore}_properties".to_sym
+    base.has_many "#{base.name.underscore}_properties".to_sym,
+      -> { order(:property_id, :seq_no) }, inverse_of: "#{base.name.underscore}"
 
     class << base
       attr_reader :property_owner, :property_class
@@ -136,22 +137,21 @@ module Properties
       end
       raise "Unknown properties: #{unknown}" unless unknown.empty?
       send(method_name).where(property_id: property_ids)
-    end.order(:property_id, :seq_no).pluck(:property_id, :property_value, :seq_no)
-      .reduce({}) do |hash, (property_id, property_value, seq_no)|
-      property_attributes = all_by_property_id_for(property_owner)[property_id]
+    end.reduce({}) do |hash, property|
+      property_attributes = all_by_property_id_for(property_owner)[property.property_id]
       # TODO instead of allowing this inconsistency to happen, use a monitor synchronized
       # block to ensure atomicity between earlier call to all_by_property_name_for and
       # this call to all_by_property_id_for
-      raise "in-memory property not found for property id #{property_id}" unless property_attributes
+      raise "in-memory property not found for property id #{property.property_id}" unless property_attributes
       property_sym = property_attributes[:property_name].to_sym
-      if seq_no > 0
+      if property.seq_no > 0
         value = hash[property_sym]
         value = [value] unless value.is_a?(Array)
-        value << convert_string_value(property_value, property_attributes[:property_type])
+        value << convert_string_value(property.property_value, property_attributes[:property_type])
         hash.merge(property_sym => value)
       else
         hash.merge(property_sym =>
-          convert_string_value(property_value, property_attributes[:property_type]))
+          convert_string_value(property.property_value, property_attributes[:property_type]))
       end
     end
   end
@@ -219,6 +219,7 @@ module Properties
         f = -> hash { upsert.row(hash[:selector], hash[:setter]) }
         actions[:insert].each &f
         actions[:update].each &f
+        association("#{property_owner.underscore}_properties".to_sym).reload
       end
     end
   end
@@ -253,4 +254,3 @@ module Properties
   end
 
 end
-
