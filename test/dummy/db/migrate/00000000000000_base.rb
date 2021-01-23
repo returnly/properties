@@ -1,4 +1,4 @@
-class Base < ActiveRecord::Migration
+class Base < ActiveRecord::Migration[5.2]
   def up
     return if Rails.env.production?
 
