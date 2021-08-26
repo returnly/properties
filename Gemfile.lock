@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    properties (0.1.2)
+    properties (0.1.3)
       composite_primary_keys
       mysql2 (>= 0.3.13, < 0.5)
       rails (> 5.0, < 7.0)
