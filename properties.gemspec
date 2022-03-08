@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", ">5.0", "< 7.0"
-  s.add_dependency "composite_primary_keys"
+  s.add_dependency "composite_primary_keys", "~> 13.0"
   s.add_dependency "upsert", "~> 2.1.2"
   s.add_dependency "mysql2", ">= 0.3.13", "< 0.5"
 
